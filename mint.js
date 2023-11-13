@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // Change these to match your setup
 //////////////////////////////////////////////////////////
-let url = "http://localhost:5006";
-let password = "your_password";
+let url = "http://localhost:5006"; //url of your server that the script can use to access your budget files
+let password = "your_password"; //passowrd of your server
 let sync_id = ''; //should look something like 'ace017dc-ee96-4b24-a1f4-e6db10c96e53'
 let inFile = "mint_test.csv" //path to file
 let cache = "./cache"; // this is where the budget file will be stored during the import.  You can delete after
