@@ -1,11 +1,11 @@
 This importer will import CSV exports from Mint.com into Actual Budget.
 
-Mint doesn't export any budget data so you will need to setup the budgets yourself.  One option is to use the Report Budget in Actual.  That is a more traditional budget style and more in line with Mint. The data will look much more clean in the budget, but I recommend the other budget style as I find it more useful.
+Mint doesn't export any budget data so you will need to setup the budgets yourself.  One option is to use the Report Budget in Actual.  That is a more traditional budget style and more in line with Mint. The data will look much more clean in the budget, but I recommend the other budget style as I find it more useful.  To use the Report Budget you need to enable it under Settings->Advanced Settings->Experimental Features->Budget Mode Toggle
 
 If you elect to use the default Rollover Budget (my recommended one) your imported data will cause really messy balances for prior months.  As I see it your options to use this style are to (sorted by expected difficulty)
 1. Use a report budget to store the old data and start fresh in a new file moving forward. I would do this because most people seldom look at their old data, and I find zero-based budgeting much more useful.  You can always open the file of the old data and run reports on that if you want.
 2. Do your best to start from the current month and ignore old ones.  It may take some transaction trickery to do this.
-3. Do what it takes to clean up the old months.  May be hard you have have years of data 
+3. Do what it takes to clean up the old months.  May be hard if you have have years of data 
 
 To run the script I had the folowing setup:
 
