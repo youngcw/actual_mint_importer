@@ -62,7 +62,7 @@ async function init() {
   console.log("importing transactions");
   for (i=0; i<json.length;i++){
     let trans = json[i];
-    let flip = json[i].TransactionType==="credit" ? true : false;
+    let flip = json[i].TransactionType==="debit" ? true : false;
     let amount = api.utils.amountToInteger(
       flip ? trans.Amount*-1 : trans.Amount
     );
