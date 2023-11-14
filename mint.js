@@ -10,9 +10,19 @@ let cache = "./cache"; // this is where the budget file will be stored during th
 //////////////////////////////////////////////////////////
 
 let api = require('@actual-app/api');
-let csvToJson = require('convert-csv-to-json');
+const csvToJson = require('csv-parse/sync');
+const fs = require('fs');
 
-let json = csvToJson.fieldDelimiter(',').getJsonFromCsv(inFile);
+const json = csvToJson.parse(fs.readFileSync(inFile, 'utf8'), {
+  bom: true,
+  quote: '"',
+  trim: true,
+  relax_column_count: true,
+  skip_empty_lines: true,
+  columns: header => {
+    return header.map(column => column.replace(/\s+/g, ''));
+  }
+});
 
 async function init() {
   console.log("connect");
