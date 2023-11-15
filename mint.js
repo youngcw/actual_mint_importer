@@ -24,6 +24,10 @@ const json = csvToJson.parse(fs.readFileSync(inFile, 'utf8'), {
   }
 });
 
+function wait (time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 async function init() {
   console.log("connect");
   await api.init({
@@ -69,19 +73,19 @@ async function init() {
   for (i=0;i<category.length;i++){
     category_ids.set(category[i], await api.createCategory({name: category[i], group_id: group_id}));
   }
-  console.log("importing transactions");
-  for (i=0; i<json.length;i++){
-    let trans = json[i];
-    let flip = json[i].TransactionType==="debit" ? true : false;
-    let amount = api.utils.amountToInteger(
-      flip ? trans.Amount*-1 : trans.Amount
-    );
-    let date = new Date(trans.Date);
-    let dateString = date.toISOString().split('T')[0]
-    console.log(trans);
-    accId = account_ids.get(trans.AccountName);
-    try {
-      await api.importTransactions(accId,[{
+  for (let j = 0; j < account.length; j++) {
+    const accTransData = json.filter((trans) => trans.AccountName === account[j]);
+    console.log(`importing transactions for: "${account[j]}"`);
+    const actualTrans = [];
+    for (const trans of accTransData) {
+      let flip = trans.TransactionType==="debit" ? true : false;
+      let amount = api.utils.amountToInteger(
+        flip ? trans.Amount*-1 : trans.Amount
+      );
+      let date = new Date(trans.Date);
+      let dateString = date.toISOString().split('T')[0]
+      console.log(trans);
+      actualTrans.push({
         date: dateString,// I think it needs to be in 'yyyy-mm-dd' format
         amount: amount,
         payee_name: trans.Description,
@@ -89,7 +93,12 @@ async function init() {
         category: category_ids.get(trans.Category),
         notes: trans.Note,
         cleared: true,
-      }]);
+      });
+    }
+    try {
+      await api.importTransactions(account_ids.get(account[j]), actualTrans);
+      // Wait for the scheduledFullSync to start before we run any other operations
+      await wait(2000);
     } catch(e) {
       console.error(e)
     }
