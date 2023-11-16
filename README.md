@@ -6,20 +6,36 @@ Mint doesn't export any budget data so you will need to setup the budgets yourse
 
 # Run
 
-To run the script I had the following setup:
-
 1. Setup Actual how you like. You need an instance of actual-server running for the importer to access.
 2. Create a new budget file and leave it empty.  Don't encrypt the file yet, the script isn't setup to open those.
-2. Clone this repo, and cd into it
-3. Store csv file in this directory that you exported from Mint.com
-4. run `npm install`.  (I tested with node18)
-5. Find all the [configuration](#configuration) to match your setup. Provide them in the next step.
-6. run `ACTUAL_SEVER_PASSWORD="your-password" ACTUAL_SYNC_ID="your-sync-id" node mint.js`
+3. Follow either the [local git checkout](#local-git-checkout) or the [docker](#docker) instructions.
 
 The importer does the following:
 * All categories listed in the CSV export will be created under a category group "Mint Import"
 
-### Configuration
+## Local Git Checkout
+
+You need to have Node.js installed.
+
+1. Clone this repo, and cd into it
+2. Store csv file in this directory that you exported from Mint.com
+3. run `npm install`.  (I tested with node18)
+4. Find all the [configuration](#configuration) to match your setup. Provide them in the next step.
+5. run `ACTUAL_SEVER_PASSWORD="your-password" ACTUAL_SYNC_ID="your-sync-id" node mint.js`
+
+## Docker
+
+You need to have docker engine or docker desktop installed.
+
+1. Build the docker image locally
+   * `docker build -t actual_mint_importer https://github.com/youngcw/actual_mint_importer.git`
+2. Navigate to the directory that you stored the Mint.com exported csv from
+3. Find all the [configuration](#configuration) to match your setup. Provide them in the next step.
+4. Run `docker run -e ACTUAL_SERVER_PASSWORD=your-password -e ACTUAL_SYNC_ID=your-sinc-id -e ACTUAL_SERVER_URL=your-server-url -v ./transaction.csv:/data/transactions.csv actual_mint_importer`
+   * Note that the server url can't be passed as localhost or 127.0.0.1 to the docker container. So you will want to use an accessible IP of your server instead.
+   * If your transaction file is named differently, change `./transaction.csv` in the command above to match.
+
+## Configuration
 
 The following environment variables are available.
 
