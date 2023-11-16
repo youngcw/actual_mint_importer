@@ -18,4 +18,4 @@ To run the script I had the folowing setup:
 6. run `node mint.js`
 
 The importer does the following:
-* All categories listed in the CSV export will be created under a category group "Mint"
+* All categories listed in the CSV export will be created under a category group "Mint Import"

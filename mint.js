@@ -2,10 +2,20 @@
 // Change these to match your setup
 //////////////////////////////////////////////////////////
 let url = "http://localhost:5006"; //url of your server that the script can use to access your budget files
-let password = "your_password"; //passowrd of your server
-let sync_id = ''; //should look something like 'ace017dc-ee96-4b24-a1f4-e6db10c96e53'
-let inFile = "mint_test.csv" //path to file
+let password = "your_password"; //password of your server
+let sync_id = ''; // found in advanced settings in  actualbudget, looks something like 'ace017dc-ee96-4b24-a1f4-e6db10c96e53'
+let inFile = "mint_test.csv"; //path to file
 let cache = "./cache"; // this is where the budget file will be stored during the import.  You can delete after
+// categories to consider as income to budget. Add any income categories from your mint budget here
+let incomeCategories = [
+  "Paycheck",
+  "Investment",
+  "Returned Purchase",
+  "Bonus",
+  "Interest Income",
+  "Reimbursement",
+  "Rental Income",
+];
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 
@@ -69,9 +79,11 @@ async function init() {
   }
   console.log("add Categories");
   let group_id = await api.createCategoryGroup({name: "Mint Import"});
+  let initial_categories = await api.getCategories();
+  let income_group_id = initial_categories.find(cat => cat.name === 'Income').group_id;
   category_ids = new Map();
   for (i=0;i<category.length;i++){
-    category_ids.set(category[i], await api.createCategory({name: category[i], group_id: group_id}));
+    category_ids.set(category[i], await api.createCategory({name: category[i], group_id: incomeCategories.includes(category[i]) ? income_group_id : group_id}));
   }
   for (let j = 0; j < account.length; j++) {
     const accTransData = json.filter((trans) => trans.AccountName === account[j]);
