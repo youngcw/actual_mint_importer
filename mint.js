@@ -1,13 +1,13 @@
 //////////////////////////////////////////////////////////
 // Change these to match your setup
 //////////////////////////////////////////////////////////
-let url = "http://localhost:5006"; //url of your server that the script can use to access your budget files
-let password = "your_password"; //password of your server
-let sync_id = ''; // found in advanced settings in  actualbudget, looks something like 'ace017dc-ee96-4b24-a1f4-e6db10c96e53'
-let inFile = "mint_test.csv"; //path to file
-let cache = "./cache"; // this is where the budget file will be stored during the import.  You can delete after
+let url = process.env.ACTUAL_SERVER_URL || "http://localhost:5006"; //url of your server that the script can use to access your budget files
+let password = process.env.ACTUAL_SERVER_PASSWORD || ""; //password of your server
+let sync_id = process.env.ACTUAL_SYNC_ID || ''; // found in advanced settings in  actualbudget, looks something like 'ace017dc-ee96-4b24-a1f4-e6db10c96e53'
+let inFile = process.env.IMPORTER_INFILE || "transactions.csv"; //path to file
+let cache = process.env.IMPORTER_CACHE_DIR || "./cache"; // this is where the budget file will be stored during the import.  You can delete after
 // categories to consider as income to budget. Add any income categories from your mint budget here
-let incomeCategories = [
+let incomeCategories = process.env.IMPORTER_INCOME_CATEGORIES?.split(',').map(cat => cat.trim()) || [
   "Paycheck",
   "Investment",
   "Returned Purchase",
@@ -22,6 +22,18 @@ let incomeCategories = [
 let api = require('@actual-app/api');
 const csvToJson = require('csv-parse/sync');
 const fs = require('fs');
+
+if (process.env.IMPORTER_EXTRA_INCOME_CATEGORIES) {
+  incomeCategories = [
+    ...incomeCategories,
+    ...process.env.IMPORTER_EXTRA_INCOME_CATEGORIES.split(',').map(cat => cat.trim())
+  ];
+}
+
+if (!password || !sync_id) {
+  console.error('Required settings not provided.');
+  process.exit(1);
+}
 
 const json = csvToJson.parse(fs.readFileSync(inFile, 'utf8'), {
   bom: true,

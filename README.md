@@ -13,11 +13,25 @@ To run the script I had the following setup:
 2. Clone this repo, and cd into it
 3. Store csv file in this directory that you exported from Mint.com
 4. run `npm install`.  (I tested with node18)
-5. Edit all the variables at the top of the file to match your setup.  You will need to use the sync_id from your budget file.  That can be found in settings->Advanced Settings->IDs
-6. run `node mint.js`
+5. Find all the [configuration](#configuration) to match your setup. Provide them in the next step.
+6. run `ACTUAL_SEVER_PASSWORD="your-password" ACTUAL_SYNC_ID="your-sync-id" node mint.js`
 
 The importer does the following:
 * All categories listed in the CSV export will be created under a category group "Mint Import"
+
+### Configuration
+
+The following environment variables are available.
+
+| Name | Description | Default |
+| ---- | ----------- | ------- |
+| ACTUAL_SERVER_URL | url of your server that the script can use to access your budget files | `http://localhost:5006`
+| ACTUAL_SERVER_PASSWORD | password of your server | |
+| ACTUAL_SYNC_ID | The sync_id from your budget file.  That can be found in settings->Advanced Settings->IDs, looks something like 'ace017dc-ee96-4b24-a1f4-e6db10c96e53' | |
+| IMPORTER_INFILE | path to mint transaction file | `transactions.csv` |
+| IMPORTER_CACHE_DIR | this is where the budget file will be stored during the import. | `./cache` |
+| IMPORTER_INCOME_CATEGORIES | comma separated list of categories to consider as income to budget | `Paycheck,Investment,Returned Purchase,Bonus,Interest Income,Reimbursement,Rental Income`
+| IMPORTER_EXTRA_INCOME_CATEGORIES | comma separated list of extra categories to add the default list | |
 
 # Budget Options
 
