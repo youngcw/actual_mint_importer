@@ -21,7 +21,7 @@ You need to have Node.js installed.
 2. Store csv file in this directory that you exported from Mint.com
 3. run `npm install`.  (I tested with node18)
 4. Find all the [configuration](#configuration) to match your setup. Provide them in the next step.
-5. run `ACTUAL_SEVER_PASSWORD="your-password" ACTUAL_SYNC_ID="your-sync-id" node mint.js`
+5. run `ACTUAL_SERVER_PASSWORD="your-password" ACTUAL_SYNC_ID="your-sync-id" node mint.js`
 
 ## Docker
 
