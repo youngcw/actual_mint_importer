@@ -41,7 +41,7 @@ The following environment variables are available.
 
 | Name | Description | Default |
 | ---- | ----------- | ------- |
-| ACTUAL_SERVER_URL | url of your server that the script can use to access your budget files | `http://localhost:5006`
+| ACTUAL_SERVER_URL | url of your server that the script can use to access your budget files. For self-signed https servers also use [NODE_TLS_REJECT_UNAUTHORIZED=0](https://nodejs.org/api/cli.html#node_tls_reject_unauthorizedvalue) | `http://localhost:5006`
 | ACTUAL_SERVER_PASSWORD | password of your server | |
 | ACTUAL_SYNC_ID | The sync_id from your budget file.  That can be found in settings->Advanced Settings->IDs, looks something like 'ace017dc-ee96-4b24-a1f4-e6db10c96e53' | |
 | IMPORTER_INFILE | path to mint transaction file | `transactions.csv` |
