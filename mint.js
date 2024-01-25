@@ -50,6 +50,16 @@ function wait (time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
+async function importTransactions(account, actualTrans) {
+  try {
+    await api.importTransactions(account, actualTrans);
+    // Wait for the scheduledFullSync to start before we run any other operations
+    await wait(2000);
+  } catch(e) {
+    console.error(e)
+  }
+}
+
 async function init() {
   console.log("connect");
   await api.init({
@@ -118,13 +128,13 @@ async function init() {
         notes: trans.Note,
         cleared: true,
       });
+      if (actualTrans.length == 1000) {
+        await importTransactions(account_ids.get(account[j]), actualTrans);
+        actualTrans.length = 0;
+      }
     }
-    try {
-      await api.importTransactions(account_ids.get(account[j]), actualTrans);
-      // Wait for the scheduledFullSync to start before we run any other operations
-      await wait(2000);
-    } catch(e) {
-      console.error(e)
+    if (actualTrans.length > 0) {
+      await importTransactions(account_ids.get(account[j]), actualTrans);
     }
   }
   console.log("done");
