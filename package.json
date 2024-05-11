@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@actual-app/api": "^6.5.1",
+    "@actual-app/api": "^6.7.1",
     "csv-parse": "^5.5.2"
   }
 }
